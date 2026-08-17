@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descubra seu Universo Sensorial de Marca</title>
+<style>
+  :root{
+    --bg:#faf7f2;
+    --card:#ffffff;
+    --ink:#2b2420;
+    --ink-soft:#6b615a;
+    --accent:#c9846b;
+    --accent-soft:#f1ded4;
+    --line:#ece4dc;
+    --radius:22px;
+    --shadow: 0 20px 50px -20px rgba(43,36,32,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: 'Georgia', 'Iowan Old Style', ui-serif, serif;
+    background: radial-gradient(circle at 20% 0%, #fff 0%, var(--bg) 55%), var(--bg);
+    color: var(--ink);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 16px;
+    line-height:1.55;
+  }
+  .app{
+    width:100%;
+    max-width:680px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow: var(--shadow);
+    padding: 44px 40px;
+    border:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  @media (max-width:560px){
+    .card{ padding: 30px 22px; }
+    body{ padding: 16px 10px; }
+  }
+  .eyebrow{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:2.5px;
+    font-size:11.5px;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:30px;
+    margin:0 0 14px;
+    line-height:1.25;
+  }
+  h2{
+    font-size:22px;
+    margin:0 0 22px;
+    line-height:1.35;
+  }
+  p.lead{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color:var(--ink-soft);
+    font-size:15.5px;
+    margin:0 0 30px;
+  }
+  .btn{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background: var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:15px 30px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{ opacity:.88; transform: translateY(-1px); }
+  .btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border:1.5px solid var(--line);
+  }
+  .btn:disabled{ opacity:.4; cursor:not-allowed; transform:none; }
+
+  .progress-wrap{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .progress-bar{
+    flex:1;
+    height:5px;
+    background:var(--line);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background: var(--accent);
+    border-radius:99px;
+    transition: width .35s ease;
+  }
+  .progress-label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    font-weight:600;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom: 8px;
+  }
+  .option{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    text-align:left;
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:15px 18px;
+    font-size:15px;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  .option:hover{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+  }
+  .option.selected{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+    font-weight:700;
+  }
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:26px;
+  }
+
+  /* Result screen */
+  .result-emoji{ font-size:52px; margin-bottom:6px; display:block; }
+  .result-tag{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display:inline-block;
+    background: var(--accent-soft);
+    color:var(--accent);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .result-block{
+    background: var(--bg);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 22px;
+    margin: 10px 0 18px;
+  }
+  .result-block h3{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    color:var(--accent);
+    margin:0 0 8px;
+  }
+  .result-block p{ margin:0; font-size:15.5px; }
+  .secondary-line{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-top:22px;
+  }
+  .hidden{ display:none !important; }
+  .brand-footer{
+    text-align:center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:12px;
+    color:#b7ada4;
+    margin-top:22px;
+    letter-spacing:.3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- INTRO -->
+  <div class="card" id="screen-intro">
+    <div class="eyebrow">Universos Sensoriais de Marca</div>
+    <h1>Qual é o seu Universo de Marca?</h1>
+    <p class="lead">Responda 7 perguntas rápidas e sinceras sobre como você é, o que você sente e o que quer despertar nas pessoas. No final, você descobre com qual dos 12 Universos Sensoriais a sua essência mais combina.</p>
+    <button class="btn" onclick="startQuiz()">Começar o teste →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card hidden" id="screen-quiz">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">1 / 7</div>
+    </div>
+    <h2 id="question-text"></h2>
+    <div class="options" id="options-wrap"></div>
+    <div class="nav-row">
+      <button class="btn secondary" id="btn-back" onclick="goBack()">Voltar</button>
+      <button class="btn" id="btn-next" onclick="goNext()" disabled>Próxima →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card hidden" id="screen-result">
+    <span class="result-emoji" id="res-emoji"></span>
+    <div class="result-tag">Seu resultado</div>
+    <h1 id="res-title"></h1>
+    <p class="lead" id="res-sentimento"></p>
+
+    <div class="result-block">
+      <h3>Sua personalidade de marca</h3>
+      <p id="res-personalidade"></p>
+    </div>
+
+    <div class="result-block">
+      <h3>Seu cenário de sucesso</h3>
+      <p id="res-sucesso"></p>
+    </div>
+
+    <p class="secondary-line" id="res-secondary"></p>
+
+    <div class="nav-row" style="justify-content:flex-start; gap:12px;">
+      <button class="btn secondary" onclick="restartQuiz()">Refazer o teste</button>
+    </div>
+  </div>
+
+  <div class="brand-footer">Universos Sensoriais de Marca · Método exclusivo</div>
+</div>
+
+<script>
+  // ---------- DATA ----------
+  const universes = {
+    dreamy: {
+      emoji: "🌸", name: "Universo Dreamy",
+      sentimento: "Sua marca vende felicidade, esperança e otimismo. Quem entra em contato com você sente bondade, leveza e renovação — e se identifica com lealdade, previsibilidade e tradição.",
+      personalidade: "Você é delicada, alegre, romântica e positiva. Prefere cooperar a competir, valoriza os prazeres simples e é extremamente leal — mas tende a evitar conflitos e adiar problemas até o último momento, por medo de decepcionar quem confia em você.",
+      sucesso: "Sucesso, para você, é sentir felicidade nos momentos mais simples da vida. Seu cenário ideal é um almoço de domingo em família, com calma e afeto — não status, não velocidade: paz."
+    },
+    fly: {
+      emoji: "✈️", name: "Universo Fly",
+      sentimento: "Sua marca vende liberdade, autenticidade e leveza. Quem chega até você se sente livre para descobrir quem é e o que quer — e é atraído por individualidade e novas possibilidades.",
+      personalidade: "Você é independente, autêntica e apaixonada por descobertas. Não gosta de seguir regras só porque existem, é inquieta, ambiciosa e fiel à própria alma — mas tende a desistir de projetos no meio do caminho em busca do próximo horizonte.",
+      sucesso: "Sucesso, para você, é liberdade em todos os sentidos: de tempo, geográfica e financeira. Seu cenário ideal é poder viajar e explorar o mundo em qualquer dia da semana."
+    },
+    wise: {
+      emoji: "🪶", name: "Universo Wise",
+      sentimento: "Sua marca vende verdade e sabedoria. Quem entra em contato com você se sente bem informado e seguro — e é atraído por segurança, racionalidade e intelectualidade.",
+      personalidade: "Você é analítica, correta, embasada e imaginativa, com um jeito digno e controlado de conduzir as coisas. Preza a honestidade acima de tudo, mas pode ser vista como arrogante e costuma demorar a lançar projetos por querer estar 100% segura antes.",
+      sucesso: "Sucesso, para você, é verdade em todos os sentidos — nos relacionamentos, no trabalho, na vida. Seu cenário ideal é adquirir todo o conhecimento e as experiências que ampliam seu repertório."
+    },
+    boss: {
+      emoji: "♟️", name: "Universo Boss",
+      sentimento: "Sua marca vende controle, segurança e poder. Quem entra em contato com você sente exclusividade e alto prestígio — e busca luxo, status e organização.",
+      personalidade: "Você é controladora, organizada e uma líder nata. É competitiva e ambiciosa, e entende que a imagem e o status ampliam o seu poder de impacto. Ama grandes responsabilidades, mas pode se tornar autoritária ou centralizadora demais.",
+      sucesso: "Sucesso, para você, é ter controle total do seu negócio e o luxo e status que vêm com ele. Seu cenário ideal é garantir um futuro confortável para a família e poder arcar com um padrão de vida elevado."
+    },
+    create: {
+      emoji: "💡", name: "Universo Create",
+      sentimento: "Sua marca vende inovação e beleza estética. Quem entra em contato com você se sente especial, inspirado e surpreendido — e busca algo diferente do óbvio.",
+      personalidade: "Você é inventiva, inspiradora, provocativa e extremamente perfeccionista, sempre pesquisando até chegar perto da perfeição. Pode se frustrar por demorar a lançar projetos e ter dificuldade de dividir sua visão de criação com uma equipe.",
+      sucesso: "Sucesso, para você, é deixar sua marca no mundo do jeito perfeito que idealizou. Seu cenário ideal é ser reconhecida e lembrada por aquilo que conseguiu criar."
+    },
+    kiss: {
+      emoji: "💋", name: "Universo Kiss",
+      sentimento: "Sua marca vende amor — pelo outro e por si mesma. Quem entra em contato com você se sente amado, desejado e mais confiante, porque a intimidade que recebe também é sobre se sentir bem consigo.",
+      personalidade: "Você é bela, atraente, íntima e afetuosa, e adora expressar carinho de forma prazerosa. Cria vínculos profundos com quem atende, mas tem medo de ser ignorada ou esquecida — e por isso pode entregar além da conta até se esgotar.",
+      sucesso: "Sucesso, para você, é amar, se amar e ser amada. Seu cenário ideal é uma vida de prazer — uma viagem romântica, um visual incrível, viver os romances que merece."
+    },
+    now: {
+      emoji: "💪", name: "Universo Now",
+      sentimento: "Sua marca vende força, coragem, vitória e competência. Quem entra em contato com você se sente energizado e motivado a vencer desafios — e busca disciplina e métodos que funcionam.",
+      personalidade: "Você é determinada, corajosa e disciplinada, provavelmente com uma história pessoal de superação. É ação pura: não espera, faz acontecer. Tem muito medo de parecer fraca ou vulnerável, e a competitividade pode virar uma obsessão que atrapalha seus próprios projetos.",
+      sucesso: "Sucesso, para você, é vencer — e mudar o mundo com isso. Seu cenário ideal é subir ao pódio em todo desafio e inspirar outras pessoas a vencerem também."
+    },
+    care: {
+      emoji: "🌿", name: "Universo Care",
+      sentimento: "Sua marca vende cuidado, zelo e compaixão. Quem entra em contato com você se sente acolhido, ouvido e protegido — e busca integridade e qualidade no atendimento.",
+      personalidade: "Você é acolhedora, calma, protetora e empática, e cuida de cada detalhe da experiência do início ao fim. Não tolera desumanização no trato com clientes — mas tem medo de não ser reconhecida pelo tanto que se doa, e corre o risco de se esgotar tentando cuidar de todo mundo.",
+      sucesso: "Sucesso, para você, é ajudar quem chega até você a sair completamente satisfeito. Seu cenário ideal é um lugar tranquilo, cercado de natureza e de uma grande família."
+    },
+    fun: {
+      emoji: "🍦", name: "Universo Fun",
+      sentimento: "Sua marca vende diversão e ousadia. Quem entra em contato com você se sente leve, conectado e representado por alguém fora dos padrões tradicionais.",
+      personalidade: "Você é bem-humorada, levemente debochada e espontânea, e vive intensamente o aqui e agora. É a alma da festa e tem dificuldade em seguir regras só por seguir — mas o medo de desagradar pode levar a decisões impulsivas, tomadas sem pensar nas consequências.",
+      sucesso: "Sucesso, para você, é viver o hoje sem pensar no amanhã — Carpe Diem ao extremo. Seu cenário ideal é aproveitar a vida onde e quando quiser, inclusive em lugares inusitados."
+    },
+    wild: {
+      emoji: "🔥", name: "Universo Wild",
+      sentimento: "Sua marca vende quebra de padrões, rebeldia e audácia. Quem entra em contato com você se sente desafiado e energizado por alguém que não segue o script do 'certo'.",
+      personalidade: "Você é caótica (no bom sentido), revolucionária e desafiadora, direta ao ponto e forte em suas convicções — gosta de confronto e não tem medo de chocar. Seu maior receio é ser 'só mais uma', e o excesso de choque pode fazer com que não seja levada a sério.",
+      sucesso: "Sucesso, para você, é causar revolução. Seu cenário ideal é liderar outras pessoas rumo à vitória, mesmo que pelo caminho menos óbvio."
+    },
+    magic: {
+      emoji: "🌙", name: "Universo Magic",
+      sentimento: "Sua marca vende transformação, fé e magia. Quem entra em contato com você vive uma experiência quase espiritual — esperançosa, transmutadora — e acredita em uma força maior guiando a realidade.",
+      personalidade: "Você é mística, mas também extremamente competente: testa tudo em si mesma antes de validar seu método. É profunda, confiante e pesquisa a fundo tudo o que ensina. Teme causar consequências negativas no processo de transformação de alguém e pode perder a paciência com quem não acompanha seu ritmo.",
+      sucesso: "Sucesso, para você, é oferecer experiências de transformação e ajudar pessoas a se encontrarem. Seu cenário ideal é ver os sonhos das pessoas ao seu redor se realizando."
+    },
+    real: {
+      emoji: "🤝", name: "Universo Real",
+      sentimento: "Sua marca vende pertencimento, igualdade e amizade. Quem entra em contato com você sente que finalmente faz parte de algo — de um grupo que fala a sua língua.",
+      personalidade: "Você é amiga, inclusiva e companheira, e adora manter as pessoas unidas. Fala de igual para igual com todo mundo, mesmo estando em posição de destaque. Seu medo é parecer superior ou ficar de fora — e, ao tentar incluir todo mundo, corre o risco de perder a própria identidade.",
+      sucesso: "Sucesso, para você, é construir uma comunidade que acolha e ajude a todos. Seu cenário ideal é uma tribo em que todo mundo tem seu lugar e sua dignidade."
+    }
+  };
+
+  const universeOrder = ["dreamy","fly","wise","boss","create","kiss","now","care","fun","wild","magic","real"];
+
+  const questions = [
+    {
+      text: "Qual sentimento você mais quer despertar em quem conhece sua marca?",
+      options: [
+        ["dreamy","Felicidade, esperança e leveza"],
+        ["fly","Liberdade e autenticidade"],
+        ["wise","Verdade e sabedoria"],
+        ["boss","Poder e exclusividade"],
+        ["create","Encantamento e admiração estética"],
+        ["kiss","Amor e conexão íntima"],
+        ["now","Força e superação"],
+        ["care","Cuidado e acolhimento"],
+        ["fun","Diversão e leveza descontraída"],
+        ["wild","Ruptura e ousadia"],
+        ["magic","Transformação e fé"],
+        ["real","Pertencimento e igualdade"]
+      ]
+    },
+    {
+      text: "Como as pessoas mais próximas descrevem a sua personalidade?",
+      options: [
+        ["dreamy","Delicada, romântica e positiva"],
+        ["fly","Independente, exploradora e autêntica"],
+        ["wise","Analítica, correta e intelectual"],
+        ["boss","Controladora, ambiciosa e líder nata"],
+        ["create","Criativa, perfeccionista e visionária"],
+        ["kiss","Afetuosa, intensa e envolvente"],
+        ["now","Disciplinada, corajosa e guerreira"],
+        ["care","Acolhedora, empática e protetora"],
+        ["fun","Engraçada, espontânea e ousada"],
+        ["wild","Intensa, direta e questionadora"],
+        ["magic","Intuitiva, profunda e misteriosa"],
+        ["real","Inclusiva, companheira e ativista"]
+      ]
+    },
+    {
+      text: "Qual é o seu maior medo em relação ao seu trabalho ou negócio?",
+      options: [
+        ["dreamy","Decepcionar alguém e ter que encarar o problema"],
+        ["fly","Ficar presa a uma rotina e perder a liberdade"],
+        ["wise","Não estar 100% embasada e parecer errada"],
+        ["boss","Perder o controle ou o status"],
+        ["create","Não alcançar a perfeição da própria criação"],
+        ["kiss","Ser ignorada ou não ser amada o suficiente"],
+        ["now","Parecer fraca ou vulnerável"],
+        ["care","Não ser reconhecida apesar de tanto cuidado"],
+        ["fun","Desagradar ou parecer sem graça"],
+        ["wild","Ser só mais uma, passar despercebida"],
+        ["magic","Causar um efeito negativo ao tentar transformar alguém"],
+        ["real","Perder a própria identidade tentando incluir todo mundo"]
+      ]
+    },
+    {
+      text: "Qual seria o seu 'cenário de sucesso' dos sonhos?",
+      options: [
+        ["dreamy","Um almoço de domingo em família, tranquilo e feliz"],
+        ["fly","Viajar e trabalhar de qualquer lugar do mundo"],
+        ["wise","Ter acesso a todo o conhecimento que amplia seu repertório"],
+        ["boss","Controle total do seu império, com luxo e alto status"],
+        ["create","Ser lembrada pela criação perfeita que deixou no mundo"],
+        ["kiss","Viver romances e prazeres, sendo intensamente amada"],
+        ["now","Subir ao pódio depois de vencer o desafio mais difícil"],
+        ["care","Um lugar tranquilo, cercado de natureza e da sua família"],
+        ["fun","Aproveitar o hoje, sem pensar no amanhã, onde quiser"],
+        ["wild","Liderar uma revolução, mesmo pelo caminho pouco convencional"],
+        ["magic","Ver as pessoas ao seu redor realizando seus sonhos"],
+        ["real","Construir uma comunidade onde todo mundo tem seu lugar"]
+      ]
+    },
+    {
+      text: "Qual comportamento mais sabota o seu progresso?",
+      options: [
+        ["dreamy","Paralisar projetos por medo de decepcionar alguém"],
+        ["fly","Desistir no meio do caminho em busca do próximo horizonte"],
+        ["wise","Demorar demais para lançar por querer segurança total"],
+        ["boss","Ser centralizadora ou autoritária demais"],
+        ["create","Travar no perfeccionismo e nunca considerar 'pronto'"],
+        ["kiss","Se doar tanto que acaba se esgotando"],
+        ["now","Competir tanto que perde o foco no que importa"],
+        ["care","Se sacrificar demais cuidando dos outros"],
+        ["fun","Agir por impulso sem pensar nas consequências"],
+        ["wild","Chocar demais e não ser levada a sério"],
+        ["magic","Perder a paciência com quem não acompanha seu ritmo"],
+        ["real","Perder a própria identidade tentando abraçar todo mundo"]
+      ]
+    },
+    {
+      text: "Se sua marca fosse um jeito de se comunicar, qual seria?",
+      options: [
+        ["dreamy","Suave, romântico e positivo"],
+        ["fly","Livre, despojado, sem regras"],
+        ["wise","Sério, embasado e elegante"],
+        ["boss","Direto, poderoso, com autoridade"],
+        ["create","Artístico, original, cheio de estética"],
+        ["kiss","Sedutor, próximo, cheio de afeto"],
+        ["now","Enérgico, motivacional, 'faz acontecer'"],
+        ["care","Calmo, gentil, acolhedor"],
+        ["fun","Engraçado, descontraído, sem papas na língua"],
+        ["wild","Provocador, cru, sem filtro"],
+        ["magic","Místico, profundo, inspirador"],
+        ["real","Próximo, inclusivo, 'de igual pra igual'"]
+      ]
+    },
+    {
+      text: "O que mais atrai o tipo de cliente que você quer atrair?",
+      options: [
+        ["dreamy","Tradição, bondade e renovação"],
+        ["fly","Autenticidade e novas experiências"],
+        ["wise","Segurança e embasamento racional"],
+        ["boss","Exclusividade e alto status"],
+        ["create","Algo diferente do 'mais do mesmo'"],
+        ["kiss","Intimidade e atenção individualizada"],
+        ["now","Disciplina e desafios para vencer"],
+        ["care","Cuidado, qualidade e integridade"],
+        ["fun","Humor e representação fora do padrão"],
+        ["wild","Ruptura com o sistema, revolução"],
+        ["magic","Uma força maior e autoconhecimento"],
+        ["real","Conexão, comunidade e pertencimento"]
+      ]
+    }
+  ];
+
+  // ---------- STATE ----------
+  let current = 0;
+  const answers = new Array(questions.length).fill(null);
+
+  const screenIntro = document.getElementById('screen-intro');
+  const screenQuiz = document.getElementById('screen-quiz');
+  const screenResult = document.getElementById('screen-result');
+
+  function startQuiz(){
+    screenIntro.classList.add('hidden');
+    screenQuiz.classList.remove('hidden');
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    const q = questions[current];
+    document.getElementById('question-text').textContent = q.text;
+    document.getElementById('progress-label').textContent = (current+1) + " / " + questions.length;
+    document.getElementById('progress-fill').style.width = (((current)/questions.length)*100) + "%";
+
+    const wrap = document.getElementById('options-wrap');
+    wrap.innerHTML = '';
+    q.options.forEach(([key, label]) => {
+      const div = document.createElement('div');
+      div.className = 'option' + (answers[current] === key ? ' selected' : '');
+      div.textContent = label;
+      div.onclick = () => selectOption(key);
+      wrap.appendChild(div);
+    });
+
+    document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+    document.getElementById('btn-next').disabled = answers[current] === null;
+    document.getElementById('btn-next').textContent = current === questions.length - 1 ? 'Ver resultado →' : 'Próxima →';
+  }
+
+  function selectOption(key){
+    answers[current] = key;
+    renderQuestion();
+  }
+
+  function goNext(){
+    if(answers[current] === null) return;
+    if(current === questions.length - 1){
+      showResult();
+    } else {
+      current++;
+      renderQuestion();
+    }
+  }
+
+  function goBack(){
+    if(current === 0) return;
+    current--;
+    renderQuestion();
+  }
+
+  function computeScores(){
+    const scores = {};
+    universeOrder.forEach(u => scores[u] = 0);
+    answers.forEach(a => { if(a) scores[a]++; });
+    return scores;
+  }
+
+  function showResult(){
+    const scores = computeScores();
+    let ranked = universeOrder.slice().sort((a,b) => scores[b]-scores[a]);
+    let topKey = ranked[0];
+    let secondKey = ranked[1];
+
+    const top = universes[topKey];
+    const second = universes[secondKey];
+
+    document.getElementById('res-emoji').textContent = top.emoji;
+    document.getElementById('res-title').textContent = top.name;
+    document.getElementById('res-sentimento').textContent = top.sentimento;
+    document.getElementById('res-personalidade').textContent = top.personalidade;
+    document.getElementById('res-sucesso').textContent = top.sucesso;
+
+    if(scores[secondKey] > 0){
+      document.getElementById('res-secondary').textContent =
+        "Seu segundo universo mais forte é o " + second.name + " " + second.emoji + " — vale explorar elementos dele também na sua marca.";
+    } else {
+      document.getElementById('res-secondary').textContent = "";
+    }
+
+    document.getElementById('progress-fill').style.width = "100%";
+    screenQuiz.classList.add('hidden');
+    screenResult.classList.remove('hidden');
+  }
+
+  function restartQuiz(){
+    current = 0;
+    answers.fill(null);
+    screenResult.classList.add('hidden');
+    screenIntro.classList.remove('hidden');
+  }
+</script>
+</body>
+</html>
